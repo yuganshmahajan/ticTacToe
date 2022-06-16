@@ -1,8 +1,7 @@
 package Service.Impls;
 
-import Service.BoardService;
-import Service.PlayerService;
 import modals.Board;
+import modals.Move;
 import modals.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,16 +14,16 @@ import static org.mockito.Mockito.when;
 class IterativeStatusCheckImplTest {
 
     @Mock
-    private BoardService mockBoard;
+    private Board mockBoard;
     @Mock
-    private PlayerService mockCurrPlayer;
+    private Player mockCurrPlayer;
 
     private IterativeStatusCheckImpl iterativeStatusCheckImplUnderTest;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        iterativeStatusCheckImplUnderTest = new IterativeStatusCheckImpl();
+        iterativeStatusCheckImplUnderTest = new IterativeStatusCheckImpl(mockBoard, mockCurrPlayer);
     }
 
     @Test
@@ -42,7 +41,7 @@ class IterativeStatusCheckImplTest {
         when(mockCurrPlayer.getPlayerId()).thenReturn(1);
 
         // Run the test
-        final boolean result = iterativeStatusCheckImplUnderTest.checkDiagonal(0,0);
+        final boolean result = iterativeStatusCheckImplUnderTest.checkDiagonal(new Move(0,0));
 
         // Verify the results
         assertTrue(result);
@@ -52,10 +51,10 @@ class IterativeStatusCheckImplTest {
     void testCheckHorizontal_success() {
         // Setup
         int bd[][] = {{1,2,1,0,0},
-                        {1,1,1,1,1},
-                        {1,2,1,0,0},
-                        {1,2,1,1,0},
-                        {2,2,1,0,2}
+                {1,1,1,1,1},
+                {1,2,1,0,0},
+                {1,2,1,1,0},
+                {2,2,1,0,2}
         };
         when(mockBoard.getBoard()).thenReturn(bd);
         when(mockBoard.getRow()).thenReturn(5);
@@ -63,7 +62,7 @@ class IterativeStatusCheckImplTest {
         when(mockCurrPlayer.getPlayerId()).thenReturn(1);
 
         // Run the test
-        final boolean result = iterativeStatusCheckImplUnderTest.checkHorizontal(1,0);
+        final boolean result = iterativeStatusCheckImplUnderTest.checkHorizontal(new Move(1,0));
 
         // Verify the results
         assertTrue(result);
@@ -84,7 +83,7 @@ class IterativeStatusCheckImplTest {
         when(mockCurrPlayer.getPlayerId()).thenReturn(1);
 
         // Run the test
-        final boolean result = iterativeStatusCheckImplUnderTest.checkVertical(0,0);
+        final boolean result = iterativeStatusCheckImplUnderTest.checkVertical(new Move(0,0));
 
         // Verify the results
         assertTrue(result);
@@ -94,10 +93,10 @@ class IterativeStatusCheckImplTest {
     void testCheckInvertedDiagonal() {
         // Setup
         int bd[][] = {{1,2,1,0,1},
-                      {1,1,1,1,0},
-                      {1,2,1,0,0},
-                      {1,1,1,1,0},
-                      {1,2,1,0,2}
+                {1,1,1,1,0},
+                {1,2,1,0,0},
+                {1,1,1,1,0},
+                {1,2,1,0,2}
         };
         when(mockBoard.getBoard()).thenReturn(bd);
         when(mockBoard.getRow()).thenReturn(5);
@@ -105,7 +104,7 @@ class IterativeStatusCheckImplTest {
         when(mockCurrPlayer.getPlayerId()).thenReturn(1);
 
         // Run the test
-        final boolean result = iterativeStatusCheckImplUnderTest.checkInvertedDiagonal(4,0);
+        final boolean result = iterativeStatusCheckImplUnderTest.checkInvertedDiagonal(new Move(4,0));
 
         // Verify the results
         assertTrue(result);
@@ -126,7 +125,7 @@ class IterativeStatusCheckImplTest {
         when(mockCurrPlayer.getPlayerId()).thenReturn(1);
 
         // Run the test
-        final boolean result = iterativeStatusCheckImplUnderTest.checkWinner(4,0);
+        final boolean result = iterativeStatusCheckImplUnderTest.checkWinner(new Move(4,0));
 
         // Verify the results
         assertTrue(result);

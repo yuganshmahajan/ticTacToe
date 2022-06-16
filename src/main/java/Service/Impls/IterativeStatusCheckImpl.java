@@ -1,7 +1,6 @@
 package Service.Impls;
 
 import Service.GameStatusCheck;
-import jdk.jfr.DataAmount;
 import lombok.Data;
 import modals.Board;
 import modals.Move;
@@ -23,7 +22,7 @@ public class IterativeStatusCheckImpl implements GameStatusCheck {
         return true;
     }
 
-    private boolean checkHorizontal(Move move){
+    public boolean checkHorizontal(Move move){
         int x = move.getX();
         int y = move.getY();
         int[][] board = getBoard().getBoard();
@@ -45,7 +44,7 @@ public class IterativeStatusCheckImpl implements GameStatusCheck {
         return ans;
     }
 
-    private boolean checkVertical(Move move){
+    public boolean checkVertical(Move move){
         int x = move.getX();
         int y = move.getY();
         int[][] board = getBoard().getBoard();
