@@ -1,35 +1,21 @@
 package Service.Impls;
 
+import Service.BoardService;
 import Service.GameStatusCheck;
-import jdk.jfr.DataAmount;
+import Service.PlayerService;
 import lombok.Data;
-import modals.Board;
-import modals.Move;
-import modals.Player;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class IterativeStatusCheckImpl implements GameStatusCheck {
-    Board board;
-    Player currPlayer;
-    public IterativeStatusCheckImpl(Board board, Player currPlayer) {
-        this.board = board;
-        this.currPlayer = currPlayer;
-    }
+    BoardService boardService;
+    PlayerService playerService;
 
-    private boolean isValid(int x, int y){
-        if(x < 0 || x >= board.getRow() || y < 0 || y >= board.getCol()){
-            return false;
-        }
-        return true;
-    }
-
-    private boolean checkHorizontal(Move move){
-        int x = move.getX();
-        int y = move.getY();
-        int[][] board = getBoard().getBoard();
+    public boolean checkHorizontal(int x, int y){
         boolean ans = true;
         for(int i = 1; i < 5; i++){
-            if(!isValid(x, y+i) || board[x][y+i] != currPlayer.getPlayerId()){
+            if(boardService.getVal(x,y+i) != playerService.getCurrPlayerId()){
                 ans = false;
                 break;
             }
@@ -37,7 +23,7 @@ public class IterativeStatusCheckImpl implements GameStatusCheck {
         if(ans == true) return ans;
         ans = true;
         for(int i = 1; i < 5; i++){
-            if(!isValid(x, y-i) || board[x][y-i] != currPlayer.getPlayerId()){
+            if(boardService.getVal(x,y-i) != playerService.getCurrPlayerId()){
                 ans = false;
                 break;
             }
@@ -45,13 +31,10 @@ public class IterativeStatusCheckImpl implements GameStatusCheck {
         return ans;
     }
 
-    private boolean checkVertical(Move move){
-        int x = move.getX();
-        int y = move.getY();
-        int[][] board = getBoard().getBoard();
+    public boolean checkVertical(int x, int y){
         boolean ans = true;
-        for(int i = 1; i < 5; i++){
-            if(!isValid(x+i, i) || board[x+i][y] != currPlayer.getPlayerId()){
+        for (int i = 1; i < 5; i++) {
+            if (boardService.getVal(x + 1, y) != playerService.getCurrPlayerId()) {
                 ans = false;
                 break;
             }
@@ -59,7 +42,7 @@ public class IterativeStatusCheckImpl implements GameStatusCheck {
         if(ans) return ans;
         ans = true;
         for(int i = 1; i < 5; i++){
-            if(!isValid(x-i, y) || board[x-i][y] != currPlayer.getPlayerId()){
+            if(boardService.getVal(x-i,y)!= playerService.getCurrPlayerId()){
                 ans = false;
                 break;
             }
@@ -67,13 +50,10 @@ public class IterativeStatusCheckImpl implements GameStatusCheck {
         return ans;
     }
 
-    public boolean checkDiagonal(Move move){
-        int x = move.getX();
-        int y = move.getY();
-        int[][] board = getBoard().getBoard();
+    public boolean checkDiagonal(int x, int y){
         boolean ans = true;
         for(int i = 1; i < 5; i++){
-            if(!isValid(x+i, y+i) || board[x+i][y+i] != currPlayer.getPlayerId()){
+            if(boardService.getVal(x+i, y+i) != playerService.getCurrPlayerId()){
                 ans = false;
                 break;
             }
@@ -81,7 +61,7 @@ public class IterativeStatusCheckImpl implements GameStatusCheck {
         if(ans == true) return ans;
         ans = true;
         for(int i = 1; i < 5; i++){
-            if(!isValid(x-i, y-i) || board[x-i][y-i] != currPlayer.getPlayerId()){
+            if(boardService.getVal(x-i, y-i) != playerService.getCurrPlayerId()){
                 ans = false;
                 break;
             }
@@ -89,13 +69,10 @@ public class IterativeStatusCheckImpl implements GameStatusCheck {
         return ans;
     }
 
-    public boolean checkInvertedDiagonal(Move move){
-        int x = move.getX();
-        int y = move.getY();
-        int[][] board = getBoard().getBoard();
+    public boolean checkInvertedDiagonal(int x, int y){
         boolean ans = true;
         for(int i = 1; i < 5; i++){
-            if(!isValid(x-i, y+i) || board[x-i][y+i] != currPlayer.getPlayerId()){
+            if(boardService.getVal(x-i,y+i) != playerService.getCurrPlayerId()){
                 ans = false;
                 break;
             }
@@ -103,7 +80,7 @@ public class IterativeStatusCheckImpl implements GameStatusCheck {
         if(ans == true) return ans;
         ans = true;
         for(int i = 1; i < 5; i++){
-            if(!isValid(x+1, y-i) || board[x+1][y-i] != currPlayer.getPlayerId()){
+            if(boardService.getVal(x+1,y-i) != playerService.getCurrPlayerId()){
                 ans = false;
                 break;
             }
@@ -111,8 +88,8 @@ public class IterativeStatusCheckImpl implements GameStatusCheck {
         return ans;
     }
 
-    public boolean checkWinner(Move move){
-        return checkHorizontal(move) || checkVertical(move) ||
-                checkDiagonal(move) || checkInvertedDiagonal(move);
+    public boolean checkWinner(int x, int y){
+        return checkHorizontal(x,y) || checkVertical(x,y) ||
+                checkDiagonal(x,y) || checkInvertedDiagonal(x,y);
     }
 }

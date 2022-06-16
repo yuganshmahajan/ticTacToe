@@ -1,7 +1,5 @@
 package Service;
 
-import modals.Move;
-
 public interface GameStatusCheck {
-    public boolean checkWinner(Move move);
+    public boolean checkWinner(int x, int y);
 }

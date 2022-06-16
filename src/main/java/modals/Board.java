@@ -33,4 +33,12 @@ public class Board {
         return true;
     }
 
+    public int getVal(int x, int y){
+        return board[x][y];
+    }
+
+    public void setVal(int x, int y, int val){
+        board[x][y] = val;
+    }
+
 }
